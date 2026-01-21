@@ -1,0 +1,51 @@
+erDiagram
+    %% FACT TABLE (Tabla de Hechos)
+    FACT_ATENCIONES_MEDICAS {
+        int id_atencion PK
+        int sk_paciente FK
+        int sk_medico FK
+        int sk_sala FK
+        int sk_tiempo FK
+        int duracion_dias
+        decimal costo_total
+        int cantidad_tratamientos
+    }
+
+    %% DIMENSIONS (Tablas Dimensionales)
+    DIM_PACIENTE {
+        int sk_paciente PK
+        string cedula
+        string nombre_completo
+        string rango_etario
+        string ciudad_origen
+    }
+
+    DIM_MEDICO {
+        int sk_medico PK
+        string nombre
+        string especialidad
+        string hospital_sede
+    }
+
+    DIM_SALA {
+        int sk_sala PK
+        int numero_sala
+        string tipo_sala "Comun/UCI"
+        string equipamiento_clave
+        boolean permite_acompanante
+    }
+
+    DIM_TIEMPO {
+        int sk_tiempo PK
+        date fecha_completa
+        int anio
+        int mes
+        int dia_semana
+        boolean es_feriado
+    }
+
+    %% RELACIONES
+    DIM_PACIENTE ||--o{ FACT_ATENCIONES_MEDICAS : tiene
+    DIM_MEDICO ||--o{ FACT_ATENCIONES_MEDICAS : realiza
+    DIM_SALA ||--o{ FACT_ATENCIONES_MEDICAS : aloja
+    DIM_TIEMPO ||--o{ FACT_ATENCIONES_MEDICAS : ocurre_en
